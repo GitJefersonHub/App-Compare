@@ -1,70 +1,117 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const App: React.FC = () => {
+  const [gasolina, setGasolina] = useState<string>('');
+  const [alcool, setAlcool] = useState<string>('');
+  const [consumoGasolina, setConsumoGasolina] = useState<string>('');
+  const [consumoAlcool, setConsumoAlcool] = useState<string>('');
+  const [resultado, setResultado] = useState<string>('');
+  const [mostrarConsumo, setMostrarConsumo] = useState<boolean>(false);
 
-export default function HomeScreen() {
+  const calcular = () => {
+    if (!gasolina || !alcool) {
+      Alert.alert('Erro', 'Por favor, insira os preços da gasolina e do álcool ou calcule a média de veiculos populares.');
+      return;
+    }
+
+    const precoGasolina = parseFloat(gasolina);
+    const precoAlcool = parseFloat(alcool);
+    const kmPorLitroGasolina = parseFloat(consumoGasolina) || 13; // Eficiência média do Fiat Mobi com gasolina
+    const kmPorLitroAlcool = parseFloat(consumoAlcool) || 9; // Eficiência média do Fiat Mobi com álcool
+
+    const custoPorKmGasolina = precoGasolina / kmPorLitroGasolina;
+    const custoPorKmAlcool = precoAlcool / kmPorLitroAlcool;
+
+    if (custoPorKmAlcool < custoPorKmGasolina) {
+      const kmExtra = ((kmPorLitroAlcool * precoGasolina) / precoAlcool - kmPorLitroGasolina).toFixed(2);
+      setResultado(`É melhor abastecer com álcool. Você rodará ${kmExtra} km a mais por litro.`);
+    } else {
+      const kmExtra = ((kmPorLitroGasolina * precoAlcool) / precoGasolina - kmPorLitroAlcool).toFixed(2);
+      setResultado(`É melhor abastecer com gasolina. Você rodará ${kmExtra} km a mais por litro.`);
+    }
+  };
+
+  const novaPesquisa = () => {
+    setGasolina('');
+    setAlcool('');
+    setConsumoGasolina('');
+    setConsumoAlcool('');
+    setResultado('');
+    setMostrarConsumo(false);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <Text style={styles.title}>Calculadora de Combustível</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Preço da Gasolina"
+        keyboardType="numeric"
+        value={gasolina}
+        onChangeText={setGasolina}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Preço do Álcool"
+        keyboardType="numeric"
+        value={alcool}
+        onChangeText={setAlcool}
+      />
+      <Button title="Calcular" onPress={calcular} />
+      {resultado ? (
+        <View>
+          <Text style={styles.result}>{resultado}</Text>
+          <Button title="Nova Pesquisa" onPress={novaPesquisa} />
+        </View>
+      ) : null}
+      <Button title="Inserir Consumo Médio" onPress={() => setMostrarConsumo(true)} />
+      {mostrarConsumo && (
+        <>
+          <TextInput
+            style={styles.input}
+            placeholder="Consumo de Gasolina (km/L)"
+            keyboardType="numeric"
+            value={consumoGasolina}
+            onChangeText={setConsumoGasolina}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Consumo de Álcool (km/L)"
+            keyboardType="numeric"
+            value={consumoAlcool}
+            onChangeText={setConsumoAlcool}
+          />
+        </>
+      )}
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 16,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+  },
+  result: {
+    marginTop: 16,
+    fontSize: 18,
+    textAlign: 'center',
   },
 });
+
+export default App;
