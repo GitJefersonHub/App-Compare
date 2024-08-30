@@ -18,7 +18,7 @@ const App: React.FC = () => {
     const precoGasolina = parseFloat(gasolina);
     const precoAlcool = parseFloat(alcool);
     const kmPorLitroGasolina = parseFloat(consumoGasolina) || 13; // Eficiência média do Fiat Mobi com gasolina
-    const kmPorLitroAlcool = parseFloat(consumoAlcool) || 9; // Eficiência média do Fiat Mobi com álcool sdfsjsjjjsjddijsj
+    const kmPorLitroAlcool = parseFloat(consumoAlcool) || 9; // Eficiência média do Fiat Mobi com álcool
 
     const custoPorKmGasolina = precoGasolina / kmPorLitroGasolina;
     const custoPorKmAlcool = precoAlcool / kmPorLitroAlcool;
