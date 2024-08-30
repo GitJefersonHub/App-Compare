@@ -25,10 +25,10 @@ const App: React.FC = () => {
 
     if (custoPorKmAlcool < custoPorKmGasolina) {
       const kmExtra = ((kmPorLitroAlcool * precoGasolina) / precoAlcool - kmPorLitroGasolina).toFixed(2);
-      setResultado(`É melhor abastecer com álcool. Você rodará ${kmExtra} km a mais por litro.`);
+      setResultado(`Abastecendo com álcool. O veiculo rodará ${kmExtra} km a mais por litro.`);
     } else {
       const kmExtra = ((kmPorLitroGasolina * precoAlcool) / precoGasolina - kmPorLitroAlcool).toFixed(2);
-      setResultado(`É melhor abastecer com gasolina. Você rodará ${kmExtra} km a mais por litro.`);
+      setResultado(`Abastecendo com gasolina. O veiculo rodará ${kmExtra} km a mais por litro.`);
     }
   };
 
