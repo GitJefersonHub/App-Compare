@@ -25,10 +25,10 @@ const App: React.FC = () => {
 
     if (custoPorKmAlcool < custoPorKmGasolina) {
       const kmExtra = ((kmPorLitroAlcool * precoGasolina) / precoAlcool - kmPorLitroGasolina).toFixed(2);
-      setResultado(`Abastecendo com álcool. O veiculo rodará ${kmExtra} km a mais por litro.`);
+      setResultado(`Abastecendo com álcool. ECONOMIA de ${kmExtra} km a mais por litro.`);
     } else {
       const kmExtra = ((kmPorLitroGasolina * precoAlcool) / precoGasolina - kmPorLitroAlcool).toFixed(2);
-      setResultado(`Abastecendo com gasolina. O veiculo rodará ${kmExtra} km a mais por litro.`);
+      setResultado(`Abastecendo com gasolina. ECONOMIA de ${kmExtra} km a mais por litro.`);
     }
   };
 
@@ -43,7 +43,7 @@ const App: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Calculadora de Combustível</Text>
+      <Text style={styles.title}>Combustível Inteligente</Text>
       <TextInput
         style={styles.input}
         placeholder="Preço da Gasolina"
@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: 16,
+    padding: 6,
   },
   title: {
-    fontSize: 24,
+    fontSize: 34,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 16,
