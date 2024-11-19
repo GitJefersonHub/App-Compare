@@ -7,7 +7,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// Evite que a tela inicial seja ocultada automaticamente antes que o carregamento do ativo seja concluído.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+
 
 const App: React.FC = () => {
   const [gasolina, setGasolina] = useState<string>('');
@@ -11,7 +12,7 @@ const App: React.FC = () => {
 
   const calcular = () => {
     if (!gasolina || !alcool) {
-      Alert.alert('Erro', 'Por favor, insira os preços da gasolina e do álcool ou calcule a média de veiculos populares.');
+      Alert.alert('Erro', 'Por favor, insira os preços da gasolina e do álcool ou calcule a média de veículos populares **9 km/l Álcool ou 13 km/l Gasolina**.');
       return;
     }
 
@@ -25,10 +26,10 @@ const App: React.FC = () => {
 
     if (custoPorKmAlcool < custoPorKmGasolina) {
       const kmExtra = ((kmPorLitroAlcool * precoGasolina) / precoAlcool - kmPorLitroGasolina).toFixed(2);
-      setResultado(`Abastecendo com álcool. ECONOMIA de ${kmExtra} km a mais por litro.`);
+      setResultado(`*ÁLCOOL* ${kmExtra} km a mais por litro.`);
     } else {
       const kmExtra = ((kmPorLitroGasolina * precoAlcool) / precoGasolina - kmPorLitroAlcool).toFixed(2);
-      setResultado(`Abastecendo com gasolina. ECONOMIA de ${kmExtra} km a mais por litro.`);
+      setResultado(`*GASOLINA* ${kmExtra} km a mais por litro.`);
     }
   };
 
@@ -58,14 +59,22 @@ const App: React.FC = () => {
         value={alcool}
         onChangeText={setAlcool}
       />
-      <Button title="Calcular" onPress={calcular} />
+      <TouchableOpacity style={[styles.button, styles.calcularButton]} onPress={calcular}>
+        <Text style={styles.buttonText}>Calcular</Text>
+      </TouchableOpacity>
       {resultado ? (
-        <View>
+        <View style={styles.resultContainer}>
           <Text style={styles.result}>{resultado}</Text>
-          <Button title="Nova Pesquisa" onPress={novaPesquisa} />
+          <TouchableOpacity style={[styles.button, styles.novaPesquisaButton]} onPress={novaPesquisa}>
+            <Text style={styles.buttonText}>Nova Pesquisa</Text>
+          </TouchableOpacity>
         </View>
       ) : null}
-      <Button title="Inserir Consumo Médio" onPress={() => setMostrarConsumo(true)} />
+      <View style={styles.buttonSpacing}>
+        <TouchableOpacity style={[styles.button, styles.inserirConsumoButton]} onPress={() => setMostrarConsumo(true)}>
+          <Text style={styles.buttonText}>Inserir Consumo Médio</Text>
+        </TouchableOpacity>
+      </View>
       {mostrarConsumo && (
         <>
           <TextInput
@@ -90,27 +99,63 @@ const App: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#F5F5DC',
     flex: 1,
     justifyContent: 'center',
-    padding: 6,
+    padding: 3,
   },
   title: {
-    fontSize: 34,
+    backgroundColor: '#F0F8FF',
+    fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 16,
+    paddingTop: 3,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    backgroundColor: '#FFFACD', // input preços
+    fontSize: 14,
+    borderColor: 'black',
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: 3,
     paddingHorizontal: 8,
+    borderRadius: 5, // Adiciona bordas arredondadas aos campos de input
+  },
+  resultContainer: {
+    backgroundColor: '#FF0000', // Tarja laranja
+    paddingTop: 3,
+    borderRadius: 5,
+    justifyContent: 'center', // Centraliza o conteúdo verticalmente
+    alignItems: 'center', // Centraliza o conteúdo horizontalmente
   },
   result: {
-    marginTop: 16,
-    fontSize: 18,
+    fontSize: 17,
     textAlign: 'center',
+    color: 'white', // Letras brancas
+    fontWeight: 'bold', // Fonte em negrito
+  },
+  buttonSpacing: {
+    marginTop: 3,
+  },
+  button: {
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 3,
+    alignItems: 'center',
+  },
+  calcularButton: {
+    backgroundColor: '#32CD32', // Botão Calcular verde 
+  },
+  novaPesquisaButton: {
+    backgroundColor: '#90EE90', // Botão Nova Pesquisa verde 
+    
+  },
+  inserirConsumoButton: {
+    backgroundColor: '#87CEEB', // Botão Inserir Consumo Médio azul
+  },
+  buttonText: {
+    color: 'green', // Fontes calc/nova/inser
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
