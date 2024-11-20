@@ -6,6 +6,7 @@ const App: React.FC = () => {
   const [altura, setAltura] = useState<string>('');
   const [resultado, setResultado] = useState<string>('');
   const [pesoIdeal, setPesoIdeal] = useState<string>('');
+  const [orientacao, setOrientacao] = useState<string>('');
 
   const calcularIMC = () => {
     if (!peso || !altura) {
@@ -33,7 +34,13 @@ const App: React.FC = () => {
     const pesoIdealMax = (24.9 * alturaNum * alturaNum).toFixed(2);
 
     setResultado(`IMC ${imc.toFixed(2)}. Classificação: ${classificacao}.`);
-    setPesoIdeal(`Peso ideal está entre ${pesoIdealMin} kg e ${pesoIdealMax} kg.`);
+    setPesoIdeal(`Peso ideal ${pesoIdealMin} kg a ${pesoIdealMax} kg.`);
+
+    if (classificacao !== 'Peso normal') {
+      setOrientacao('Procure orientações médica.');
+    } else {
+      setOrientacao('');
+    }
   };
 
   const novaPesquisa = () => {
@@ -41,6 +48,7 @@ const App: React.FC = () => {
     setAltura('');
     setResultado('');
     setPesoIdeal('');
+    setOrientacao('');
   };
 
   return (
@@ -67,6 +75,7 @@ const App: React.FC = () => {
         <View style={styles.resultContainer}>
           <Text style={styles.result}>{resultado}</Text>
           <Text style={styles.pesoIdeal}>{pesoIdeal}</Text>
+          {orientacao ? <Text style={styles.orientacao}>{orientacao}</Text> : null}
           <TouchableOpacity style={[styles.button, styles.novaPesquisaButton]} onPress={novaPesquisa}>
             <Text style={styles.buttonText}>Nova Pesquisa</Text>
           </TouchableOpacity>
@@ -93,10 +102,10 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#FFFACD',
-    fontSize: 18,
+    fontSize: 14,
     borderColor: 'black',
     borderWidth: 1,
-    marginBottom: 12,
+    marginBottom: 3,
     paddingHorizontal: 8,
     borderRadius: 5,
   },
@@ -106,26 +115,33 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 3,
   },
   result: {
-    fontSize: 15,
+    fontSize: 14,
     textAlign: 'center',
     color: 'white',
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 3,
   },
   pesoIdeal: {
     fontSize: 14,
     textAlign: 'center',
     color: 'yellow',
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 3,
+  },
+  orientacao: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: 'pink',
+    fontWeight: 'bold',
+    marginBottom: 3,
   },
   button: {
     padding: 10,
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 3,
     alignItems: 'center',
   },
   calcularButton: {
@@ -136,7 +152,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'green',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });
