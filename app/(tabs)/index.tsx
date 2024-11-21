@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, Linking, ImageBackground } fr
 
 const App: React.FC = () => {
   return (
-    <ImageBackground source={{ uri: 'https://example.com/background.jpg' }} style={styles.backgroundImage}>
+    <ImageBackground source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Olivetti_Programma_101_-_Museo_scienza_e_tecnologia_Milano.jpg' }} style={styles.backgroundImage}>
       <View style={styles.container}>
         <Text style={styles.title}>Bem-vindo!</Text>
         <Text style={styles.subtitle}>Estamos felizes em tê-lo aqui.</Text>
-        <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('@/Compare/assets/images/icon.png')}>
+        <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://drive.google.com/file/d/1CYnpx3mhwiX7YBlBJBuiTfaR76baxzSv/view?usp=sharing')}>
           <Text style={styles.buttonText}>Link 1</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://link2.com')}>
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30, // Tamanho da fonte do título
     fontWeight: 'bold', // Peso da fonte do título (negrito)
-    color: 'white', // Cor do texto do título
+    color: 'red', // Cor do texto do título
     marginBottom: 20, // Margem inferior do título
   },
   // Define o estilo do subtítulo
