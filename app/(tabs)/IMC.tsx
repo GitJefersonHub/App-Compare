@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   // Define o estilo do texto que exibe o IMC
   imc: {
-    fontSize: 26, // Tamanho da fonte do texto do IMC
+    fontSize: 30, // Tamanho da fonte do texto do IMC
     textAlign: 'center', // Centraliza o texto do IMC
     color: 'white', // cor do texto do IMC
     fontWeight: 'bold', // Peso da fonte do texto do IMC (negrito)
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   // Define o estilo do texto que exibe a classificação do IMC
   classificacao: {
-    fontSize: 18, // Tamanho da fonte do texto da classificação
+    fontSize: 22, // Tamanho da fonte do texto da classificação
     textAlign: 'center', // Centraliza o texto da classificação
     color: 'white', // cor do texto da classificação
     fontWeight: 'bold', // Peso da fonte do texto da classificação (negrito)
