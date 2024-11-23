@@ -4,29 +4,35 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 const App: React.FC = () => {
   const [quantidade, setQuantidade] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
-  const [quantidades, setQuantidades] = useState<number[]>(Array(20).fill(0));
+  const [quantidades, setQuantidades] = useState<number[]>(Array(24).fill(0));
 
   const produtos = [
-    { nome: 'Arroz', preco: 5.50 },
-    { nome: 'Feijão', preco: 4.30 },
-    { nome: 'Óleo', preco: 6.20 },
-    { nome: 'Alho', preco: 2.10 },
-    { nome: 'Sal', preco: 1.00 },
-    { nome: 'Macarrão', preco: 3.75 },
-    { nome: 'Extrato', preco: 3.40 },
-    { nome: 'Açúcar', preco: 2.50 },
-    { nome: 'Café', preco: 8.90 },
-    { nome: 'Leite', preco: 4.60 },
-    { nome: 'Pão', preco: 3.20 },
-    { nome: 'Manteiga', preco: 7.80 },
-    { nome: 'Sabão pó', preco: 10.50 },
-    { nome: 'Sabonete', preco: 9.30 },
+    { nome: 'Arroz', preco: 38.50 },
+    { nome: 'Feijão', preco: 7.40 },
+    { nome: 'Macarrão', preco: 6.20 },
+    { nome: 'Óleo', preco: 7.10 },
+    { nome: 'Alho', preco: 2.80 },
+    { nome: 'Sal', preco: 3.75 },
+    { nome: 'Extrato', preco: 6.40 },
+    { nome: 'Açúcar', preco: 18.50 },
+    { nome: 'Café', preco: 17.90 },
+    { nome: 'Leite', preco: 5.60 },
+    { nome: 'Tody', preco: 15.20 },
+    { nome: 'Manteiga', preco: 12.80 },
+    { nome: 'Sabão pó', preco: 30.50 },
+    { nome: 'Detergente', preco: 18.30 },
+    { nome: 'Sabonete', preco: 15.30 },
     { nome: 'Pasta', preco: 12.40 },
-    { nome: 'Shampoo', preco: 15.70 },
-    { nome: 'Carnes', preco: 14.90 },
-    { nome: 'Ovos', preco: 5.60 },
-    { nome: 'Queijo', preco: 11.50 },
-    { nome: 'Presunto', preco: 9.80 },
+    { nome: 'Fio dental', preco: 8.40 },
+    { nome: 'Shampoo', preco: 29.70 },
+    { nome: 'Condic', preco: 32.70 },
+    { nome: 'Ovos', preco: 18.60 },
+    { nome: 'Queijo', preco: 19.50 },
+    { nome: 'Presunto', preco: 19.80 },
+    { nome: 'Tomate', preco: 3.30 },
+    { nome: 'Batata', preco: 4.20 },
+    
+    
   ];
 
   const atualizarQuantidade = (index: number, novaQuantidade: number) => {
@@ -51,7 +57,7 @@ const App: React.FC = () => {
   };
 
   const resetar = () => {
-    setQuantidades(Array(20).fill(0));
+    setQuantidades(Array(24).fill(0));
     setQuantidade(0);
     setTotal(0);
   };
@@ -62,7 +68,10 @@ const App: React.FC = () => {
         {produtos.map((produto, index) => (
           <View key={index} style={styles.item}>
             <TextInput
-              style={styles.input}
+              style={[
+                styles.input,
+                { backgroundColor: quantidades[index] === 0 ? styles.inputZero.backgroundColor : styles.inputNonZero.backgroundColor },
+              ]}
               keyboardType="numeric"
               value={quantidades[index].toString()}
               onChangeText={(text) => {
@@ -122,7 +131,7 @@ const styles = StyleSheet.create({
   item: {
     backgroundColor: '#32CD32',
     padding: 2,
-    borderRadius: 5,
+    borderRadius: 2,
     margin: 1,
     width: '24%',
     alignItems: 'center',
@@ -130,7 +139,6 @@ const styles = StyleSheet.create({
 
   // Estiliza botão input
   input: {
-    backgroundColor: '#FFF',
     fontSize: 10,
     borderColor: 'black',
     borderWidth: 1,
@@ -139,6 +147,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: '100%',
     textAlign: 'center',
+  },
+
+  // Estiliza botão input com valor zero
+  inputZero: {
+    backgroundColor: 'white',
+  },
+
+  // Estiliza botão input com valor maior que zero
+  inputNonZero: {
+    backgroundColor: '#FFFF00',
   },
 
   //Estiliza o nome do produto.
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
   },
 
-  // Estiliza o compartimento resultado
+  // Estiliza  compartimento resultado
   resultadoContainer: {
     marginTop: 3,
     alignItems: 'center',
