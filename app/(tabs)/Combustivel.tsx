@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Alert, TouchableOpacity, StyleSheet } from 'react-native';
 
 const App: React.FC = () => {
   const [gasolina, setGasolina] = useState<string>('');
@@ -10,6 +10,8 @@ const App: React.FC = () => {
   const [resultadoConsumo, setResultadoConsumo] = useState<string>('');
   const [mostrarConsumo, setMostrarConsumo] = useState<boolean>(false);
   const [mostrarCalcular, setMostrarCalcular] = useState<boolean>(true);
+  const [corResultado, setCorResultado] = useState<string>('#FF0000'); // Cor padrão
+  const [mostrarTitulo, setMostrarTitulo] = useState<boolean>(true); // Estado para controlar a exibição do título
 
   const calcular = () => {
     if (!gasolina || !alcool) {
@@ -29,13 +31,17 @@ const App: React.FC = () => {
       const kmExtra = ((kmPorLitroAlcool * precoGasolina) / precoAlcool - kmPorLitroGasolina).toFixed(2);
       setResultadoCombustivel('*ÁLCOOL*');
       setResultadoConsumo(`${kmExtra} km a mais por litro.`);
+      setCorResultado('green'); // Cor do álcool
     } else {
       const kmExtra = ((kmPorLitroGasolina * precoAlcool) / precoGasolina - kmPorLitroAlcool).toFixed(2);
       setResultadoCombustivel('*GASOLINA*');
       setResultadoConsumo(`${kmExtra} km a mais por litro.`);
+      setCorResultado('red'); // Cor da gasolina
     }
 
     setMostrarCalcular(false); // Esconde o botão "Calcular" após o cálculo
+    setMostrarConsumo(false); // Esconde o botão "Inserir Consumo Médio" após o cálculo
+    setMostrarTitulo(false); // Esconde o título após o cálculo
   };
 
   const novaPesquisa = () => {
@@ -47,19 +53,22 @@ const App: React.FC = () => {
     setResultadoConsumo('');
     setMostrarConsumo(false);
     setMostrarCalcular(true); // Mostra o botão "Calcular" novamente
+    setCorResultado('#FF0000'); // Reseta a cor padrão
+    setMostrarTitulo(true); // Mostra o título novamente
   };
 
   return (
     <View style={styles.container}>
+      {mostrarTitulo && <Text style={styles.title}>Calculadora de Combustível</Text>}
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.inputGasolina]}
         placeholder="Preço da Gasolina"
         keyboardType="numeric"
         value={gasolina}
         onChangeText={setGasolina}
       />
       <TextInput
-        style={styles.input}
+        style={[styles.input, styles.inputAlcool]}
         placeholder="Preço do Álcool"
         keyboardType="numeric"
         value={alcool}
@@ -71,7 +80,7 @@ const App: React.FC = () => {
         </TouchableOpacity>
       )}
       {resultadoCombustivel ? (
-        <View style={styles.resultContainer}>
+        <View style={[styles.resultContainer, { backgroundColor: corResultado }]}>
           <Text style={styles.resultCombustivel}>{resultadoCombustivel}</Text>
           <Text style={styles.resultConsumo}>{resultadoConsumo}</Text>
           <TouchableOpacity style={[styles.button, styles.novaPesquisaButton]} onPress={novaPesquisa}>
@@ -79,22 +88,17 @@ const App: React.FC = () => {
           </TouchableOpacity>
         </View>
       ) : null}
-      <View style={styles.buttonSpacing}>
-        <TouchableOpacity style={[styles.button, styles.inserirConsumoButton]} onPress={() => setMostrarConsumo(true)}>
-          <Text style={styles.buttonText}>Inserir Consumo Médio</Text>
-        </TouchableOpacity>
-      </View>
       {mostrarConsumo && (
         <>
           <TextInput
-            style={styles.input}
+            style={[styles.input, styles.inputConsumo]}
             placeholder="Consumo de Gasolina (km/L)"
             keyboardType="numeric"
             value={consumoGasolina}
             onChangeText={setConsumoGasolina}
           />
           <TextInput
-            style={styles.input}
+            style={[styles.input, styles.inputConsumo]}
             placeholder="Consumo de Álcool (km/L)"
             keyboardType="numeric"
             value={consumoAlcool}
@@ -102,6 +106,13 @@ const App: React.FC = () => {
           />
         </>
       )}
+      <View style={styles.buttonSpacing}>
+        {mostrarCalcular && (
+          <TouchableOpacity style={[styles.button, styles.inserirConsumoButton]} onPress={() => setMostrarConsumo(true)}>
+            <Text style={styles.buttonText}>Inserir Consumo Médio</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
@@ -109,35 +120,51 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   // Define o estilo do contêiner principal da aplicação
   container: {
-    backgroundColor: '#F5F5DC', // Cor de fundo do contêiner
+    backgroundColor: 'blue', // Cor de fundo do contêiner
     flex: 1, // Contêiner como flexível, ocupando todo o espaço disponível
     justifyContent: 'center', // Centraliza o conteúdo verticalmente
     padding: 3, // Preenchimento interno do contêiner
   },
+  // Estilo do título
+  title: {
+    fontSize: 28, // Tamanho da fonte do título
+    fontWeight: 'bold', // Peso da fonte do título
+    color: '#FFFF00', // Cor do texto do título
+    textAlign: 'center', // Centraliza o texto do título
+    marginBottom: 10, // Margem inferior do título
+  },
   // Estilo dos campos de entrada de texto
   input: {
-    backgroundColor: '#FFFACD', // Cor de fundo dos campos de entrada
     fontSize: 20, // Tamanho da fonte do texto dentro dos campos de entrada
-    borderColor: 'black', // Cor da borda dos campos de entrada
+    borderColor: 'white', // Cor da borda dos campos de entrada
     borderWidth: 1, // Largura da borda dos campos de entrada
     marginBottom: 3, // Margem inferior dos campos de entrada
     paddingHorizontal: 8, // Preenchimento horizontal interno dos campos de entrada
     borderRadius: 5, // Raio das bordas arredondadas dos campos de entrada
     textAlign: 'center', // Centraliza o texto dentro dos campos de entrada
   },
+  inputGasolina: {
+    backgroundColor: '#FF6347', // Cor de fundo do campo de entrada da gasolina
+  },
+  inputAlcool: {
+    backgroundColor: '#9ACD32', // Cor de fundo do campo de entrada do álcool
+  },
+  inputConsumo: {
+    backgroundColor: '#F0F8FF', // Cor de fundo do campo de entrada de consumo
+    fontSize: 18,
+  },
   // Estilo do contêiner que exibe os resultados
   resultContainer: {
-    backgroundColor: '#FF0000', // Cor de fundo do contêiner de resultados
     paddingTop: 3, // Preenchimento superior do contêiner de resultados
     borderRadius: 5, // Raio das bordas arredondadas do contêiner de resultados
     justifyContent: 'center', // Centraliza o conteúdo verticalmente dentro do contêiner de resultados
     alignItems: 'center', // Centraliza o conteúdo horizontalmente dentro do contêiner de resultados
-    borderColor: 'black', // Cor da borda dos campos de entrada
+    borderColor: 'white', // Cor da borda dos campos de entrada
     borderWidth: 1, // Largura da borda dos campos de entrada
   },
   // Define o estilo do texto que exibe o combustível
   resultCombustivel: {
-    fontSize: 24, // Tamanho da fonte do texto do combustível
+    fontSize: 30, // Tamanho da fonte do texto do combustível
     textAlign: 'center', // Centraliza o texto do combustível
     color: 'white', // Cor do texto do combustível
     fontWeight: 'bold', // Peso da fonte do texto do combustível (negrito)
@@ -153,11 +180,11 @@ const styles = StyleSheet.create({
   },
   // Define o espaçamento entre os botões
   buttonSpacing: {
-    marginTop: 3, // Margem superior dos botões
+    marginTop: 0, // Margem superior dos botões
   },
   // Define o estilo base dos botões
   button: {
-    padding: 8, // Preenchimento interno dos botões
+    padding: 8, // Preenchimento interno dos bot
     borderRadius: 5, // Raio das bordas arredondadas dos botões
     marginBottom: 3, // Margem inferior dos botões
     alignItems: 'center', // Centraliza o conteúdo horizontalmente dentro dos botões
@@ -165,7 +192,7 @@ const styles = StyleSheet.create({
   // Define o estilo específico do botão "Calcular"
   calcularButton: {
     backgroundColor: '#32CD32', // Cor de fundo do botão "Calcular"
-    borderColor: 'black', // Cor da borda dos campos de entrada
+    borderColor: 'white', // Cor da borda dos campos de entrada
     borderWidth: 1, // Largura da borda dos campos de entrada
   },
   // Define o estilo específico do botão "Nova Pesquisa"
@@ -175,7 +202,7 @@ const styles = StyleSheet.create({
   // Define o estilo específico do botão "Inserir Consumo Médio"
   inserirConsumoButton: {
     backgroundColor: '#87CEEB', // Cor de fundo do botão "Inserir Consumo Médio"
-    borderColor: 'black', // Cor da borda dos campos de entrada
+    borderColor: 'white', // Cor da borda dos campos de entrada
     borderWidth: 1, // Largura da borda dos campos de entrada
   },
   // Define o estilo do texto dentro dos botões

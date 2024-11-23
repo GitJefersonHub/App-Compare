@@ -6,16 +6,8 @@ const App: React.FC = () => {
     <ImageBackground source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Olivetti_Programma_101_-_Museo_scienza_e_tecnologia_Milano.jpg' }} style={styles.backgroundImage}>
       <View style={styles.container}>
         <Text style={styles.title}>Bem-vindo!</Text>
-        <Text style={styles.subtitle}>Estamos felizes em tê-lo aqui.</Text>
-        <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://drive.google.com/file/d/1CYnpx3mhwiX7YBlBJBuiTfaR76baxzSv/view?usp=sharing')}>
-          <Text style={styles.buttonText}>Link 1</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://link2.com')}>
-          <Text style={styles.buttonText}>Link 2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('https://link3.com')}>
-          <Text style={styles.buttonText}>Link 3</Text>
-        </TouchableOpacity>
+        <Text style={styles.subtitle}>APP Calculadoras.</Text>
+        <Text style={styles.subtitle3}>Estamos felizes em tê-lo aqui.</Text>
       </View>
     </ImageBackground>
   );
@@ -34,17 +26,25 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Centraliza o conteúdo horizontalmente
     padding: 16, // Preenchimento interno do contêiner
   },
-  // Define o estilo do título
+  // Define o estilo do título 1
   title: {
-    fontSize: 30, // Tamanho da fonte do título
+    fontSize: 40, // Tamanho da fonte do título
     fontWeight: 'bold', // Peso da fonte do título (negrito)
     color: 'red', // Cor do texto do título
     marginBottom: 20, // Margem inferior do título
   },
-  // Define o estilo do subtítulo
+  // Define o estilo do subtítulo 2
   subtitle: {
-    fontSize: 18, // Tamanho da fonte do subtítulo
-    color: 'white', // Cor do texto do subtítulo
+    fontSize: 30, // Tamanho da fonte do subtítulo
+    color: 'blue', // Cor do texto do subtítulo
+    marginBottom: 40, // Margem inferior do subtítulo
+    textAlign: 'center', // Centraliza o texto do subtítulo
+    
+  },
+  // Define o estilo do subtítulo 3
+  subtitle3: {
+    fontSize: 20, // Tamanho da fonte do subtítulo
+    color: 'green', // Cor do texto do subtítulo
     marginBottom: 40, // Margem inferior do subtítulo
     textAlign: 'center', // Centraliza o texto do subtítulo
   },

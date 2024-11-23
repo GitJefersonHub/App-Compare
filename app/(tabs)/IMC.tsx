@@ -8,6 +8,8 @@ const App: React.FC = () => {
   const [classificacao, setClassificacao] = useState<string>('');
   const [pesoIdeal, setPesoIdeal] = useState<string>('');
   const [orientacao, setOrientacao] = useState<string>('');
+  const [mostrarCalcular, setMostrarCalcular] = useState<boolean>(true);
+  const [mostrarTitulo, setMostrarTitulo] = useState<boolean>(true);
 
   const calcularIMC = () => {
     if (!peso || !altura) {
@@ -43,6 +45,9 @@ const App: React.FC = () => {
     } else {
       setOrientacao('');
     }
+
+    setMostrarCalcular(false); // Esconde o botão "Calcular" após o cálculo
+    setMostrarTitulo(false); // Esconde o título após o cálculo
   };
 
   const novaPesquisa = () => {
@@ -52,10 +57,13 @@ const App: React.FC = () => {
     setClassificacao('');
     setPesoIdeal('');
     setOrientacao('');
+    setMostrarCalcular(true); // Mostra o botão "Calcular" novamente
+    setMostrarTitulo(true); // Mostra o título novamente
   };
 
   return (
     <View style={styles.container}>
+      {mostrarTitulo && <Text style={styles.title}>Calculadora de IMC</Text>}
       <TextInput
         style={styles.input}
         placeholder="Peso (kg)"
@@ -70,9 +78,11 @@ const App: React.FC = () => {
         value={altura}
         onChangeText={setAltura}
       />
-      <TouchableOpacity style={[styles.button, styles.calcularButton]} onPress={calcularIMC}>
-        <Text style={styles.buttonText}>Calcular</Text>
-      </TouchableOpacity>
+      {mostrarCalcular && (
+        <TouchableOpacity style={[styles.button, styles.calcularButton]} onPress={calcularIMC}>
+          <Text style={styles.buttonText}>Calcular</Text>
+        </TouchableOpacity>
+      )}
       {imc ? (
         <View style={styles.resultContainer}>
           <Text style={styles.imc}>{imc}</Text>
@@ -95,6 +105,14 @@ const styles = StyleSheet.create({
     flex: 1, // Contêiner como flexível, ocupando todo o espaço disponível
     justifyContent: 'center', // Centraliza o conteúdo verticalmente
     padding: 16, // Preenchimento interno do contêiner
+  },
+  // Estilo do título
+  title: {
+    fontSize: 28, // Tamanho da fonte do título
+    fontWeight: 'bold', // Peso da fonte do título
+    color: 'black', // Cor do texto do título
+    textAlign: 'center', // Centraliza o texto do título
+    marginBottom: 10, // Margem inferior do título
   },
   // Estilo dos campos de entrada de texto
   input: {
@@ -120,7 +138,7 @@ const styles = StyleSheet.create({
   },
   // Define o estilo do texto que exibe o IMC
   imc: {
-    fontSize: 20, // Tamanho da fonte do texto do IMC
+    fontSize: 26, // Tamanho da fonte do texto do IMC
     textAlign: 'center', // Centraliza o texto do IMC
     color: 'white', // cor do texto do IMC
     fontWeight: 'bold', // Peso da fonte do texto do IMC (negrito)
